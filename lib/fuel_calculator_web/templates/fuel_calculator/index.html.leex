@@ -1,0 +1,20 @@
+<!-- index.html.leex -->
+<h1>Fuel Calculator</h1>
+<%= form_for @changeset, "#", [phx_submit: :do_calculation, as: :calculation], fn f -> %>
+  <label>Ship Mass:</label>
+  <%= text_input f, :mass   %>
+  <br>
+  <label>Route:</label>
+
+    <%= select f, :mission, @missions  %>
+
+  <br>
+  <button type="submit">Calculate</button>
+
+<% end %>
+<br>
+<h2>Result:</h2>
+<p>The fuel required for the ship is: <%= @result %> </p>
+<p>The lanching_fuel required for the ship is: <%= @lanching_fuel %> </p>
+<p>The landing_fuel required for the ship is: <%= @landing_fuel %> </p>
+<p>The additional_fuel required for the ship is: <%= @additional_fuel %> </p>

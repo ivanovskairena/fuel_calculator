@@ -1,0 +1,17 @@
+<h2>Fuel Calculation</h2>
+
+<p>
+  Weight of Equipment: <%= @mass %> kg<br>
+  Weight of Fuel: <%= @result - @mass %> kg<br>
+</p>
+
+<p>
+  Path:
+  <%= for {directive, planet_gravity} <- @route do %>
+    <%= directive %> <%= planet_gravity %>,
+  <% end %>
+</p>
+
+<p>
+  Arguments: <%= @mass %>, <%= inspect(@route) %>
+</p>

@@ -1,0 +1,31 @@
+<h1>Show Calculator</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.calculator_show_path(@socket, :show, @calculator)}>
+    <.live_component
+      module={FuelCalculatorWeb.CalculatorLive.FormComponent}
+      id={@calculator.id}
+      title={@page_title}
+      action={@live_action}
+      calculator={@calculator}
+      return_to={Routes.calculator_show_path(@socket, :show, @calculator)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Ship mass:</strong>
+    <%= @calculator.ship_mass %>
+  </li>
+
+  <li>
+    <strong>Flight route:</strong>
+    <%= @calculator.flight_route %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.calculator_show_path(@socket, :edit, @calculator), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.calculator_index_path(@socket, :index) %></span>
