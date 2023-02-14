@@ -2,7 +2,7 @@
 <h1>Fuel Calculator</h1>
 <%= form_for @changeset, "#", [phx_submit: :do_calculation, as: :calculation], fn f -> %>
   <label>Ship Mass:</label>
-  <%= text_input f, :mass   %>
+  <%= text_input f, :mass, type: "number"  %>
   <br>
   <label>Route:</label>
 

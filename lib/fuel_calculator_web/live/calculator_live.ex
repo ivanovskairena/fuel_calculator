@@ -60,8 +60,8 @@ defmodule FuelCalculatorWeb.CalculatorLive do
             landing_fuel: land,
             additional_launch_fuel: add_launching(launch, Decimal.from_float(r.launch)),
             additional_landing_fuel: add_landing(land, Decimal.from_float(r.land)),
-            total_launch_fuel: launch + add_launching(launch, Decimal.from_float(r.launch)),
             total_land_fuel: land + add_landing(land, Decimal.from_float(r.land)),
+            total_launch_fuel: launch + add_launching(launch, Decimal.from_float(r.launch)),
           }
         end
 
@@ -85,39 +85,47 @@ defmodule FuelCalculatorWeb.CalculatorLive do
     {:noreply, assign(socket, assigns)}
   end
 
+
+
+  def new_landing(mass, gravity) do
+    landing_vals = [mass, gravity, Decimal.from_float(0.033)]
+    landing_sum = landing_vals |> Enum.reduce(fn x, acc -> Decimal.mult(x, acc) end) |> Decimal.sub(42)
+    tt = Decimal.round(landing_sum, 2) |> Decimal.to_string()
+
+    {val, _num} = Integer.parse(tt)
+
+    Logger.warn("landing fuel  #{inspect val}  ")
+    val
+  end
+
+  def add_landing(v, gravity)   do
+      landing_vals = [v, gravity, Decimal.from_float(0.033)]
+      landing_sum = landing_vals |> Enum.reduce(fn x, acc -> Decimal.mult(x, acc) end) |> Decimal.sub(42)
+
+      tt = landing_sum |> Decimal.to_string()
+
+      {val, _num} = Integer.parse(tt)
+
+      if val > 40 or val == 40 do
+
+        Logger.warn("requires #{inspect val} more fuel")
+        val + add_landing(val, gravity)
+
+      else
+        0
+      end
+
+  end
+
   def new_launch(mass, gravity) do
     launching_vals = [mass, gravity, Decimal.from_float(0.042)]
     launching_sum = launching_vals |> Enum.reduce(fn x, acc -> Decimal.mult(x, acc) end) |> Decimal.sub(33)
     tt = Decimal.round(launching_sum, 2) |> Decimal.to_string()
 
     {val, _num} = Integer.parse(tt)
+    Logger.warn("launching fuel #{inspect val}  ")
+
     val
-  end
-
-  def new_landing(mass, gravity) do
-    launching_vals = [mass, gravity, Decimal.from_float(0.033)]
-    launching_sum = launching_vals |> Enum.reduce(fn x, acc -> Decimal.mult(x, acc) end) |> Decimal.sub(42)
-    tt = Decimal.round(launching_sum, 2) |> Decimal.to_string()
-
-    {val, _num} = Integer.parse(tt)
-    val
-  end
-
-
-
-  def add_landing(v, gravity)   do
-      launching_vals = [v, gravity, Decimal.from_float(0.033)]
-      launching_sum = launching_vals |> Enum.reduce(fn x, acc -> Decimal.mult(x, acc) end) |> Decimal.sub(42)
-
-      tt = launching_sum |> Decimal.to_string()
-
-      {val, _num} = Integer.parse(tt)
-
-      if val > 40 or val == 40 do
-        val + add_landing(val, gravity)
-      else
-        0
-      end
   end
 
   def add_launching(v, gravity)  do
@@ -128,10 +136,14 @@ defmodule FuelCalculatorWeb.CalculatorLive do
     {val, _num} = Integer.parse(tt)
 
     if val > 40 or val == 40  do
+
+      Logger.warn("requires #{inspect val} more fuel")
       val + add_launching(val, gravity)
+
     else
       0
     end
+
   end
 
 end
