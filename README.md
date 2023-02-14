@@ -10,7 +10,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
-## Project is to calculate fuel consumtion for the mission to space based on these requirements
+## Project is to calculate fuel that is needed for the mission to space based on the requirements listed on this link
  - https://docs.google.com/document/d/1iRytYuAfUaih8fQHFZVfZwanQZjegFm9ulsMvmqENwM/edit
  
 ## Calculations are made in /calculator by using a mass input and a route for the mission.
